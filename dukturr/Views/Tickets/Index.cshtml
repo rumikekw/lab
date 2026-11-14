@@ -1,0 +1,93 @@
+﻿@model IEnumerable<duktur.Models.Ticket>
+@{
+    ViewData["Title"] = "Müraciətlər";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Texniki dəstək müraciətləri</h2>
+        <a asp-action="Create" class="btn btn-primary">+ Yeni müraciət yarat</a>
+    </div>
+
+    <form method="get" class="row g-2 mb-4 bg-white p-3 rounded shadow-sm">
+        <div class="col-md-4">
+            <input type="text" name="search" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Başlıq və ya təsvir üzrə axtar..." />
+        </div>
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">Bütün kateqoriyalar</option>
+                <option value="Computer" selected="@(ViewBag.CurrentCategory == "Computer")">Kompüter</option>
+                <option value="Internet" selected="@(ViewBag.CurrentCategory == "Internet")">İnternet</option>
+                <option value="Printer" selected="@(ViewBag.CurrentCategory == "Printer")">Printer</option>
+                <option value="Software" selected="@(ViewBag.CurrentCategory == "Software")">Proqram təminatı</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">Bütün statuslar</option>
+                <option value="New" selected="@(ViewBag.CurrentStatus == "New")">New</option>
+                <option value="In Progress" selected="@(ViewBag.CurrentStatus == "In Progress")">In Progress</option>
+                <option value="Resolved" selected="@(ViewBag.CurrentStatus == "Resolved")">Resolved</option>
+                <option value="Closed" selected="@(ViewBag.CurrentStatus == "Closed")">Closed</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex gap-1">
+            <button type="submit" class="btn btn-dark w-100">Filtrlə</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Sıfırla</a>
+        </div>
+    </form>
+
+    <table class="table table-hover table-bordered shadow-sm align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Başlıq</th>
+                <th>Kateqoriya</th>
+                <th>Prioritet</th>
+                <th>Status</th>
+                <th>Tarix</th>
+                <th>Əməliyyatlar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(item.Priority == "High" ? "table-danger" : "")">
+                    <td>#@item.Id</td>
+                    <td class="fw-semibold">@item.Title</td>
+                    <td>@item.Category</td>
+                    <td>
+                        @if (item.Priority == "High")
+                        {
+                            <span class="badge bg-danger">High</span>
+                        }
+                        else if (item.Priority == "Normal")
+                        {
+                            <span class="badge bg-primary">Normal</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Low</span>
+                        }
+                    </td>
+                    <td>
+                        <span class="badge @(item.Status == "Resolved" ? "bg-success" : item.Status == "In Progress" ? "bg-warning text-dark" : item.Status == "Closed" ? "bg-dark" : "bg-info text-dark")">
+                            @item.Status
+                        </span>
+                    </td>
+                    <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white">Ətraflı</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Redaktə</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Göstəriləcək müraciət tapılmadı.</div>
+    }
+</div>

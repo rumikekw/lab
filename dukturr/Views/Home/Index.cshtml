@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Ana səhifə";
+}
+
+<div class="container mt-5">
+    <div class="p-5 mb-4 bg-white shadow-sm rounded-4 border">
+        <span class="badge bg-primary mb-2">Universitet IT Dəstək Portalı</span>
+        <h1 class="display-5 fw-bold">IT Help Desk Sistemi</h1>
+        <p class="lead text-muted">
+            Kompüter, şəbəkə, printer və proqram təminatı ilə bağlı texniki problemlərinizi sürətli şəkildə qeydiyyata alın və həll prosesini izləyin.
+        </p>
+        <div class="mt-4 d-flex gap-2">
+            <a asp-controller="Tickets" asp-action="Create" class="btn btn-primary btn-lg px-4">
+                + Yeni müraciət yarat
+            </a>
+            <a asp-controller="Tickets" asp-action="Index" class="btn btn-outline-dark btn-lg px-4">
+                Müraciətlərə bax
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 text-center">
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">Ümumi Müraciətlər</h6>
+                <h2 class="fw-bold text-primary">@ViewBag.TotalTickets</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">Yeni (New)</h6>
+                <h2 class="fw-bold text-info">@ViewBag.NewTickets</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">İcrada (In Progress)</h6>
+                <h2 class="fw-bold text-warning">@ViewBag.InProgressTickets</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">Həll edilib (Resolved)</h6>
+                <h2 class="fw-bold text-success">@ViewBag.ResolvedTickets</h2>
+            </div>
+        </div>
+    </div>
+</div>
